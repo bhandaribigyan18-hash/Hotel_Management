@@ -1,0 +1,2 @@
+1|bigyan|1234|bigyan|01072647166|bhan@gmail.com|lamki|Customer
+2|admin|admin123|||||Admin
