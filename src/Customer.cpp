@@ -10,7 +10,7 @@ using namespace std;
 
 int Customer::nextId = 1;
 
-
+// ─── Constructors / Destructor ────────────────────────────────────────────────
 
 Customer::Customer()
     : User(), customerId(nextId++), name(""), phone(""), email(""), address("") {}
@@ -23,7 +23,7 @@ Customer::Customer(string username, string password, string name,
 
 Customer::~Customer() {}
 
-
+// ─── Getters ──────────────────────────────────────────────────────────────────
 
 int    Customer::getCustomerId() const { return customerId; }
 string Customer::getName()       const { return name; }
@@ -31,28 +31,33 @@ string Customer::getPhone()      const { return phone; }
 string Customer::getEmail()      const { return email; }
 string Customer::getAddress()    const { return address; }
 
-
+// ─── Setters ──────────────────────────────────────────────────────────────────
 
 void Customer::setName(const string& n)    { name    = n; }
 void Customer::setPhone(const string& p)   { phone   = p; }
 void Customer::setEmail(const string& e)   { email   = e; }
 void Customer::setAddress(const string& a) { address = a; }
 
-
+// ─── Methods ──────────────────────────────────────────────────────────────────
 
 void Customer::searchRoom(const string& roomType,
                           const string& checkIn,
-                          const string& checkOut) {
+                          const string& checkOut,
+                          const string& acPref) {
     cout << "\n=== Available Rooms ===" << endl;
-    cout << "Type: " << roomType
-         << " | Check-in: " << checkIn
+    cout << "Type: "      << roomType
+         << " | AC: "     << acPref
+         << " | Check-in: "  << checkIn
          << " | Check-out: " << checkOut << endl;
 
     vector<Room> rooms = Room::loadFromFile();
     bool found = false;
     for (const Room& r : rooms) {
-        if (r.checkAvailability() &&
-            (roomType == "Any" || r.getRoomType() == roomType)) {
+        bool typeMatch = (roomType == "Any" || r.getRoomType() == roomType);
+        bool acMatch   = (acPref   == "Any"
+                          || (acPref == "AC"    &&  r.getIsAC())
+                          || (acPref == "NonAC" && !r.getIsAC()));
+        if (r.checkAvailability() && typeMatch && acMatch) {
             r.displayRoom();
             found = true;
         }
@@ -113,7 +118,7 @@ void Customer::displayInfo() const {
     cout << "Username: " << getUsername() << endl;
 }
 
-
+// ─── File I/O ─────────────────────────────────────────────────────────────────
 
 void Customer::saveToFile() const {
     ofstream file("data/users.txt", ios::app);

@@ -1,0 +1,6 @@
+1|2|30003|cash|Completed|2026-05-31
+1|1|5000|online|Completed|2026-06-07
+1|1|7500|cash|Completed|2026-06-07
+2|5|5000|credit card|Completed|2026-06-07
+1|7|5000|Credit Card|Completed|2026-06-07|**** **** **** 0366|TXN14053502
+3|18|3500|Online|Completed|2026-06-07||TXN10224060

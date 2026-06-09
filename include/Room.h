@@ -12,10 +12,12 @@ private:
     double price;
     bool   isAvailable;
     int    maxGuests;
+    bool   isAC;           
 
 public:
     Room();
-    Room(int roomNumber, const string& roomType, double price, int maxGuests);
+    Room(int roomNumber, const string& roomType, double price,
+         int maxGuests, bool isAC);
     ~Room();
 
     
@@ -24,11 +26,13 @@ public:
     double getPrice()       const;
     bool   getIsAvailable() const;
     int    getMaxGuests()   const;
+    bool   getIsAC()        const;   
 
     
     void setRoomType(const string& roomType);
     void setPrice(double price);
     void setMaxGuests(int maxGuests);
+    void setIsAC(bool isAC);         
 
     
     bool checkAvailability() const;
@@ -36,6 +40,10 @@ public:
     void displayRoom() const;
 
     
+    static bool isValidRoomNumber(int roomNumber);
+    static bool isDuplicateRoomNumber(int roomNumber);
+
+   
     void saveToFile() const;
     static vector<Room> loadFromFile();
     static void removeFromFile(int roomNumber);

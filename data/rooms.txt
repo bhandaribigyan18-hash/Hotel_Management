@@ -1,0 +1,10 @@
+101|single|1000|1|1|AC
+102|single|700|1|1|NonAC
+103|Double|1500|1|2|AC
+201|single|1000|0|1|AC
+202|single|1000|1|1|AC
+203|single|700|0|1|NonAC
+301|double|1200|0|2|NonAC
+302|double|1500|1|2|AC
+303|double|1500|1|2|AC
+401|Suite|2000|1|4|AC

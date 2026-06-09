@@ -12,10 +12,21 @@ private:
     string paymentMethod;   // "Cash", "Credit Card", "Online"
     string paymentStatus;   // "Pending", "Completed", "Refunded"
     string paymentDate;
+    string cardNumber;      // NEW: last 4 digits of card (masked)
+    string transactionId;   // NEW: online transaction confirmation code
 
     int    reservationId;
 
     static int nextId;
+
+    
+    bool processCash();
+    bool processCreditCard();
+    bool processOnline();
+
+    static string generateConfirmationCode();
+    static bool   isValidCardNumber(const string& number);
+    static string maskCardNumber(const string& number);
 
 public:
     Payment();
@@ -24,12 +35,14 @@ public:
     ~Payment();
 
     
-    int    getPaymentId()     const;
-    double getAmount()        const;
-    string getPaymentMethod() const;
-    string getPaymentStatus() const;
-    string getPaymentDate()   const;
-    int    getReservationId() const;
+    int    getPaymentId()      const;
+    double getAmount()         const;
+    string getPaymentMethod()  const;
+    string getPaymentStatus()  const;
+    string getPaymentDate()    const;
+    string getCardNumber()     const;
+    string getTransactionId()  const;
+    int    getReservationId()  const;
 
     
     void setPaymentStatus(const string& status);

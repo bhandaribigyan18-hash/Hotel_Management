@@ -1,2 +1,2 @@
 1|bigyan|1234|bigyan|01072647166|bhan@gmail.com|lamki|Customer
-2|admin|admin123|||||Admin
+2|kulraj|kulraj123|Kulraj Neupane|01029582444|kulraj024@gmail.com|busan gaya |Customer

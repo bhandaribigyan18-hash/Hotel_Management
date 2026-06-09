@@ -18,8 +18,8 @@ public:
   
     int getAdminId() const;
 
-    
-    void addRoom(int roomNumber, const string& roomType, double price, int maxGuests);
+    // Methods
+    void addRoom(int roomNumber, const string& roomType, double price, int maxGuests, bool isAC);
     void removeRoom(int roomNumber);
     void updateRoom(int roomNumber, const string& field, const string& newValue);
     void manageReservation(int reservationId, const string& action);
@@ -27,6 +27,7 @@ public:
 
     void displayInfo() const override;
 
+ 
     void saveToFile() const;
     static Admin loadFromFile(const string& username);
 };

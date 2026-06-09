@@ -22,7 +22,6 @@ public:
              string phone, string email, string address);
     ~Customer();
 
-    
     int getCustomerId() const;
     string getName() const;
     string getPhone() const;
@@ -36,7 +35,7 @@ public:
     void setAddress(const string& address);
 
     
-    void searchRoom(const string& roomType, const string& checkIn, const string& checkOut);
+    void searchRoom(const string& roomType, const string& checkIn, const string& checkOut, const string& acPref);
     int  bookRoom(int roomNumber, const string& checkIn, const string& checkOut);
     bool cancelReservation(int reservationId);
     void viewBooking(int reservationId);
