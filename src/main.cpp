@@ -13,7 +13,7 @@
 #include <regex>
 using namespace std;
 
-
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 string currentDate() {
     time_t now = time(nullptr);
@@ -28,7 +28,7 @@ void clearInput() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-
+// ─── Date Validation ──────────────────────────────────────────────────────────
 
 bool isValidDateFormat(const string& date) {
     // Must match YYYY-MM-DD exactly
@@ -61,9 +61,9 @@ bool isValidDateFormat(const string& date) {
     }
 
     // Year range
-    if (year < 2026 || year > 2100) {
+    if (year < 2024 || year > 2100) {
         cout << "❌ Invalid year: " << year
-             << ". Must be between 2026 and 2100." << endl;
+             << ". Must be between 2024 and 2100." << endl;
         return false;
     }
 
@@ -88,7 +88,7 @@ bool isNotPastDate(const string& date) {
     return true;
 }
 
-
+// Keeps asking until a valid date is entered
 string getValidDate(const string& prompt, bool allowPast = false) {
     string date;
     while (true) {
@@ -101,7 +101,7 @@ string getValidDate(const string& prompt, bool allowPast = false) {
     return date;
 }
 
-
+// Keeps asking until check-out is after check-in
 string getValidCheckOut(const string& checkIn) {
     string date;
     while (true) {
@@ -162,7 +162,7 @@ void customerMenu(Customer& customer) {
                 double bill = res.calculateBill(price);
                 cout << "Total Bill: $" << bill << endl;
 
-                
+                // Payment method selection menu
                 cout << "\nSelect Payment Method:" << endl;
                 cout << "1. Cash"         << endl;
                 cout << "2. Credit Card"  << endl;
@@ -218,7 +218,7 @@ void customerMenu(Customer& customer) {
     customer.logout();
 }
 
-
+// ─── Admin Menu ───────────────────────────────────────────────────────────────
 
 void adminMenu(Admin& admin) {
     int choice;
@@ -228,8 +228,8 @@ void adminMenu(Admin& admin) {
         cout << "2. Remove Room"          << endl;
         cout << "3. Update Room"          << endl;
         cout << "4. Manage Reservation"   << endl;
-        cout << "5. Generate Report"      << endl;
-        cout << "6. My Profile"           << endl;
+        cout << "5. Manage Users"         << endl;
+        cout << "6. Generate Report"      << endl;
         cout << "0. Logout"              << endl;
         cout << "Choice: ";
         cin >> choice;
@@ -311,17 +311,52 @@ void adminMenu(Admin& admin) {
             admin.manageReservation(resId, action);
 
         } else if (choice == 5) {
-            admin.generateReport();
+            // Manage Users submenu
+            int userChoice;
+            cout << "\n===== Manage Users =====" << endl;
+            cout << "1. View All Users"           << endl;
+            cout << "2. Search User"              << endl;
+            cout << "3. View User Bookings"       << endl;
+            cout << "4. Remove User"              << endl;
+            cout << "0. Back"                     << endl;
+            cout << "Choice: ";
+            cin >> userChoice;
+            clearInput();
+
+            if (userChoice == 1) {
+                admin.viewAllUsers();
+
+            } else if (userChoice == 2) {
+                string uname;
+                cout << "Enter username to search: ";
+                getline(cin, uname);
+                admin.searchUser(uname);
+
+            } else if (userChoice == 3) {
+                string uname;
+                cout << "Enter username to view bookings: ";
+                getline(cin, uname);
+                admin.viewUserBookings(uname);
+
+            } else if (userChoice == 4) {
+                string uname;
+                cout << "Enter username to remove: ";
+                getline(cin, uname);
+                admin.removeUser(uname);
+
+            } else if (userChoice != 0) {
+                cout << "❌ Invalid choice." << endl;
+            }
 
         } else if (choice == 6) {
-            admin.displayInfo();
+            admin.generateReport();
         }
 
     } while (choice != 0);
     admin.logout();
 }
 
-
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
 int main() {
     cout << "=====================================" << endl;
@@ -356,19 +391,124 @@ int main() {
                 cout << "Login failed. Customer not found." << endl;
 
         } else if (mainChoice == 2) {
-            string username, password, name, phone, email, address;
-            cout << "Username : "; getline(cin, username);
-            cout << "Password : "; getline(cin, password);
-            cout << "Name     : "; getline(cin, name);
-            cout << "Phone    : "; getline(cin, phone);
-            cout << "Email    : "; getline(cin, email);
-            cout << "Address  : "; getline(cin, address);
 
-            Customer c(username, password, name, phone, email, address);
-            c.saveToFile();
-            cout << "Registration successful! You can now log in." << endl;
+    string username, password, name, phone, email, address;
 
-        } else if (mainChoice == 3) {
+    regex usernamePattern("^[A-Za-z0-9_]{3,20}$");
+    regex namePattern("^[A-Za-z ]+$");
+    regex phonePattern("^[0-9]{7,15}$");
+    regex emailPattern(R"(^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$)");
+
+    // Username
+    while (true) {
+        cout << "Username : ";
+        getline(cin, username);
+
+        if (username.empty()) {
+            cout << "❌ Username cannot be empty.\n";
+            continue;
+        }
+
+        if (!regex_match(username, usernamePattern)) {
+            cout << "❌ Username must contain only letters, numbers, or _ (3-20 characters).\n";
+            continue;
+        }
+
+        break;
+    }
+
+    // Password
+    while (true) {
+        cout << "Password : ";
+        getline(cin, password);
+
+        if (password.length() < 6) {
+            cout << "❌ Password must be at least 6 characters.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    // Name
+    while (true) {
+        cout << "Name     : ";
+        getline(cin, name);
+
+        if (name.empty()) {
+            cout << "❌ Name cannot be empty.\n";
+            continue;
+        }
+
+        if (!regex_match(name, namePattern)) {
+            cout << "❌ Name must contain letters only.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    // Phone Number
+    while (true) {
+        cout << "Phone    : ";
+        getline(cin, phone);
+
+        if (!regex_match(phone, phonePattern)) {
+            cout << "❌ Phone number must contain digits only (7-15 digits).\n";
+            continue;
+        }
+
+        break;
+    }
+
+    // Email
+    while (true) {
+        cout << "Email    : ";
+        getline(cin, email);
+
+        if (!regex_match(email, emailPattern)) {
+            cout << "❌ Invalid email format.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    // Address
+    while (true) {
+        cout << "Address  : ";
+        getline(cin, address);
+
+        if (address.empty()) {
+            cout << "❌ Address cannot be empty.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    // Check duplicate username
+    vector<Customer> customers = Customer::loadFromFile();
+    bool exists = false;
+
+    for (const Customer& c : customers) {
+        if (c.getUsername() == username) {
+            exists = true;
+            break;
+        }
+    }
+
+    if (exists) {
+        cout << "❌ Username already exists. Please choose another username.\n";
+    }
+    else {
+        Customer c(username, password, name, phone, email, address);
+        c.saveToFile();
+
+        cout << "\n✅ Registration successful!" << endl;
+        cout << "You can now log in.\n";
+    }
+} else if (mainChoice == 3) {
             string username, password;
             cout << "Admin Username: "; getline(cin, username);
             cout << "Admin Password: "; getline(cin, password);

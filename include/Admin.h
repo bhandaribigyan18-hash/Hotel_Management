@@ -3,6 +3,7 @@
 
 #include "User.h"
 #include <string>
+#include <vector>
 using namespace std;
 
 class Admin : public User {
@@ -15,21 +16,29 @@ public:
     Admin(string username, string password);
     ~Admin();
 
-  
+    // Getters
     int getAdminId() const;
 
-    // Methods
+    // Room Management
     void addRoom(int roomNumber, const string& roomType, double price, int maxGuests, bool isAC);
     void removeRoom(int roomNumber);
     void updateRoom(int roomNumber, const string& field, const string& newValue);
+
+    // Reservation Management
     void manageReservation(int reservationId, const string& action);
+
+    // User Management  ← NEW
+    void viewAllUsers();
+    void removeUser(const string& username);
+    void searchUser(const string& username);
+    void viewUserBookings(const string& username);
+
+    // Report
     void generateReport();
 
-    void displayInfo() const override;
-
- 
+    // File I/O
     void saveToFile() const;
     static Admin loadFromFile(const string& username);
 };
 
-#endif 
+#endif // ADMIN_H
