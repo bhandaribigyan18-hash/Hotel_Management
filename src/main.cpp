@@ -133,9 +133,9 @@ void customerMenu(Customer& customer) {
 
         if (choice == 1) {
             string type, acPref;
-            cout << "Room type (Single/Double/Suite/Any): ";
+            cout << "Room type (Single/Double/Suite): ";
             getline(cin, type);
-            cout << "AC preference (AC/NonAC/Any): ";
+            cout << "AC preference (AC/NonAC): ";
             getline(cin, acPref);
             string checkIn  = getValidDate("Check-in  (YYYY-MM-DD): ");
             string checkOut = getValidCheckOut(checkIn);
